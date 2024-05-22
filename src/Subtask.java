@@ -22,11 +22,11 @@ public class Subtask extends Task {
     public static Epic getEpic(Subtask subtask, Map<Integer, Epic> epics) {
         Epic newEpic = null;
         for (Epic epic : epics.values()) {
-                if (epic.epicId == subtask.epicId) {
-                    newEpic = epic;
-                    break;
-                }
+            if (epic.epicId == subtask.epicId) {
+                newEpic = epic;
+                break;
             }
+        }
         return newEpic;
     }
 
