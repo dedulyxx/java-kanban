@@ -2,13 +2,13 @@
 
 public class Task {
 
-    protected final Object nameTask;
-    protected final Object description;
+    protected final String nameTask;
+    protected final String description;
     protected final int uuid;
     protected Status status;
 
 
-    public Task(Object nameTask, Object description) {
+    public Task(String nameTask, String description) {
         this.nameTask = nameTask;
         this.description = description;
         this.uuid = TaskManager.generateId();

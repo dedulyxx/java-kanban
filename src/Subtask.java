@@ -3,8 +3,11 @@ import java.util.Map;
 
 public class Subtask extends Task {
 
-    public Subtask(Object nameTask, Object description) {
+    int epicId;
+
+    public Subtask(String nameTask, String description, int epicId) {
         super(nameTask, description);
+        this.epicId = epicId;
     }
 
 
@@ -16,15 +19,14 @@ public class Subtask extends Task {
 
 
     //Получить Эпик по подзадаче
-    public static Epic getEpic(Subtask subtask, Map<Epic, List<Subtask>> epicsAndSubTasks) {
+    public static Epic getEpic(Subtask subtask, Map<Integer, Epic> epics) {
         Epic newEpic = null;
-        for (Epic epic : epicsAndSubTasks.keySet()) {
-            for (Subtask subTask : epicsAndSubTasks.get(epic)) {
-                if (subTask.equals(subtask)) {
+        for (Epic epic : epics.values()) {
+                if (epic.epicId == subtask.epicId) {
                     newEpic = epic;
+                    break;
                 }
             }
-        }
         return newEpic;
     }
 

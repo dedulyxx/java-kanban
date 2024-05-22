@@ -6,14 +6,22 @@ import java.util.Map;
 public class TaskManager {
 
     private static int uuid = 0;
-    public Map<Integer, Task> tasks = new HashMap<>();
-    public Map<Integer, Epic> epics = new HashMap<>();
-    public static Map<Epic, List<Subtask>> epicsAndSubTasks = new HashMap<>();
-    public List<Subtask> subTasks = new ArrayList<>();
+
+    public static int epicId = 0;
+    public final Map<Integer, Task> tasks = new HashMap<>();
+    public final static Map<Integer, Epic> epics = new HashMap<>();
+    public final static Map<Epic, List<Subtask>> epicsAndSubTasks = new HashMap<>();
+    private List<Subtask> subTasks = new ArrayList<>();
+
+    private static List<Status> statusTask = new ArrayList<>();
 
 
-    public final static int generateId() {                                 //Генерация уникального id для каждой задачи
+    public static int generateId() {                                 //Генерация уникального id для каждой задачи
         return ++uuid;
+    }
+
+    public static int generateEpicId() {                                 //Генерация уникального id для каждой задачи
+        return ++epicId;
     }
 
     public void addTask(Task task) {                                       //Создание задачи
@@ -22,10 +30,12 @@ public class TaskManager {
 
     public void addEpic(Epic epic) {                                       //Создание Эпика
         epics.put(epic.uuid, epic);
+        epicsAndSubTasks.put(epic, null);
     }
 
-    public void addSubTasks(Epic epic, Subtask subtask) {                   //Создание Подзадачи для Эпика
-        if (!epicsAndSubTasks.isEmpty() && epicsAndSubTasks.containsKey(epic)) {
+    public void addSubTasks(Subtask subtask) {                   //Создание Подзадачи для Эпика
+        Epic epic = Subtask.getEpic(subtask, epics);
+        if (!epicsAndSubTasks.isEmpty() && epicsAndSubTasks.containsKey(epic) && epicsAndSubTasks.get(epic) != null) {
             subTasks = epicsAndSubTasks.get(epic);
             subTasks.add(subtask);
         } else {
@@ -33,12 +43,49 @@ public class TaskManager {
             subTasks.add(subtask);
             epicsAndSubTasks.put(epic, subTasks);
         }
-        Epic.checkTasks(epic, epicsAndSubTasks);
+        checkTasks(epic, epicsAndSubTasks);
+    }
+
+    public static void checkTasks(Epic epic, Map<Epic, List<Subtask>> epicsAndSubTasks) {
+        int countStatusDONE = 0;
+        int countStatusNEW = 0;
+        if (!epicsAndSubTasks.isEmpty()) {
+            for (Subtask subTask : epicsAndSubTasks.get(epic)) {
+                statusTask.add(subTask.status);
+            }
+            if (statusTask.isEmpty()) {
+                epic.status = Status.NEW;
+                return;
+            }
+            for (Status status : statusTask) {
+                if (status == Status.IN_PROGRESS) {
+                    epic.status = Status.IN_PROGRESS;
+                    statusTask.clear();
+                    return;
+                } else if (status == Status.DONE) {
+                    countStatusDONE++;
+                } else if (status == Status.NEW) {
+                    countStatusNEW++;
+                }
+            }
+            if (countStatusDONE == statusTask.size()) {
+                epic.status = Status.DONE;
+                statusTask.clear();
+            } else if (countStatusNEW == statusTask.size()) {
+                epic.status = Status.NEW;
+                statusTask.clear();
+            } else {
+                epic.status = Status.IN_PROGRESS;
+                statusTask.clear();
+            }
+        } else {
+            epic.status = Status.NEW;
+        }
     }
 
     public static void checkTask(Subtask subtask) {                         //Проверить статус таски
-        Epic epic = Subtask.getEpic(subtask, epicsAndSubTasks);
-        Epic.checkTasks(epic, epicsAndSubTasks);
+        Epic epic = Subtask.getEpic(subtask, epics);
+        checkTasks(epic, epicsAndSubTasks);
     }
 
     public void viewTasks() {                                                 //Вывод всех типов задач
@@ -81,7 +128,7 @@ public class TaskManager {
         }
     }
 
-    public void getSubtasksByEpic(Epic epic) {                         //Получить Подзадачу по uuid
+    public void getSubtasksByEpic(Epic epic) {                         //Получить Подзадачу по Эпику
         if (epicsAndSubTasks.isEmpty()) {
             System.out.println("Подзадач нет");
             return;
@@ -119,7 +166,7 @@ public class TaskManager {
                 for (Subtask subTask : epicsAndSubTasks.get(epic)) {
                     if (subTask.uuid == uuid) {
                         removeSubtask(subTask);
-                        Epic.checkTasks(epic, epicsAndSubTasks);
+                        checkTasks(epic, epicsAndSubTasks);
                         return;
                     }
                 }
@@ -134,7 +181,12 @@ public class TaskManager {
 
     public void removeSubtask(Epic epic, Subtask subtask) {                  //Удалить подзадачу
         subTasks.remove(subtask);
-        Epic.checkTasks(epic, epicsAndSubTasks);
+        checkTasks(epic, epicsAndSubTasks);
+    }
+
+    public void removeEpic(Epic epic) {                           //Удалить Эпик
+        epics.remove(epic.epicId);
+        epicsAndSubTasks.remove(epic);
     }
 
     public void updateTask(Task task) {                                      //Обновить таску
@@ -146,7 +198,7 @@ public class TaskManager {
     }
 
     public void updateSubTask(Subtask subtask) {                             //Обновить Подзадачу
-        Epic epic = Subtask.getEpic(subtask, epicsAndSubTasks);
+        Epic epic = Subtask.getEpic(subtask, epics);
         if (epic != null) {
             subTasks = epicsAndSubTasks.get(epic);
             subTasks.add(subtask);
