@@ -1,3 +1,5 @@
+package ru.practicum.java.tasks;
+
 public class Epic extends Task {
 
     public final int epicId;

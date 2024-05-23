@@ -1,3 +1,5 @@
+package ru.practicum.java.tasks;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -88,21 +90,31 @@ public class TaskManager {
         checkTasks(epic, epicsAndSubTasks);
     }
 
-    public void viewTasks() {                                                 //Вывод всех типов задач
+    public Map viewTasks() {                                                //Вывод всех типов задач
+        Map<Integer, Task> viewTasks = new HashMap<>();
         if (!tasks.isEmpty()) {
-            System.out.println(tasks);
+            viewTasks = tasks;
         } else {
             System.out.println("Задач нет");
         }
         if (!epics.isEmpty()) {
             if (epicsAndSubTasks.isEmpty()) {
-                System.out.println(epics);
+                viewEpics();
             } else {
-                System.out.println(epicsAndSubTasks);
+                viewEpicsAndSubtasks();
             }
         } else {
             System.out.println("Эпиков нет");
         }
+        return viewTasks;
+    }
+
+    private void viewEpics() {                                               //Вывод Эпиков
+        System.out.println(epics);
+    }
+
+    private void viewEpicsAndSubtasks() {                                    //Вывод Подзадач
+        System.out.println(epicsAndSubTasks);
     }
 
     public void removeAllTasks() {                                     //Удаление всех задач (задачи, эпики, подхадачи)
@@ -158,26 +170,27 @@ public class TaskManager {
 
     public void removeById(int uuid) {                                    //Удалить по uuid
         if (tasks.containsKey(uuid)) {
-            System.out.println(tasks.remove(uuid));
+            tasks.remove(uuid);
         } else if (epics.containsKey(uuid)) {
-            System.out.println(epics.remove(uuid));
+            epics.remove(uuid);
         } else if (!epicsAndSubTasks.isEmpty()) {
             for (Epic epic : epicsAndSubTasks.keySet()) {
                 for (Subtask subTask : epicsAndSubTasks.get(epic)) {
                     if (subTask.uuid == uuid) {
                         removeSubtask(subTask);
                         checkTasks(epic, epicsAndSubTasks);
-                        return;
+                    } else {
+                        System.out.println("Идентификатор не найден");
                     }
                 }
             }
         }
-        System.out.println("Идентификатор не найден");
     }
 
     private void removeSubtask(Subtask subtask) {                            //Удалить подзадачу (Только для менеджера)
         subTasks.remove(subtask);
     }
+
 
     public void removeSubtask(Epic epic, Subtask subtask) {                  //Удалить подзадачу
         subTasks.remove(subtask);

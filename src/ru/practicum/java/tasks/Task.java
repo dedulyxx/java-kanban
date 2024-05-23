@@ -1,3 +1,4 @@
+package ru.practicum.java.tasks;
 
 
 public class Task {

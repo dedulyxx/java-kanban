@@ -1,4 +1,5 @@
-import java.util.List;
+package ru.practicum.java.tasks;
+
 import java.util.Map;
 
 public class Subtask extends Task {
