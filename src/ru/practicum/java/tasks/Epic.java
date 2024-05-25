@@ -2,16 +2,17 @@ package ru.practicum.java.tasks;
 
 public class Epic extends Task {
 
-    public final int epicId;
+    private int epicId;
+    private int taskId;
 
     public Epic(String nameTask, String description) {
         super(nameTask, description);
-        this.epicId = TaskManager.generateEpicId();
     }
 
     @Override
-    public void setStatus(Enum newStatus) {
+    public Epic setStatus(Status newStatus) {
         super.setStatus(newStatus);
+        return this;
     }
 
     @Override
@@ -21,5 +22,23 @@ public class Epic extends Task {
                 ", description=" + description +
                 ", status=" + status +
                 '}';
+    }
+
+    public void setEpicId(int epicId) {
+        this.epicId = epicId;
+    }
+
+    public int getEpicId() {
+        return epicId;
+    }
+
+    @Override
+    public int getTaskId() {
+        return taskId;
+    }
+
+    @Override
+    public void setTaskId(int taskId) {
+        this.taskId = taskId;
     }
 }
