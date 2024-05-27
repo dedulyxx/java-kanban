@@ -4,8 +4,8 @@ public class Task {
 
     protected final String nameTask;
     protected final String description;
-    protected int taskId;
-    public Status status;
+    protected int id;
+    protected Status status;
 
 
     public Task(String nameTask, String description) {
@@ -28,17 +28,17 @@ public class Task {
 
     @Override
     public String toString() {
-        return " Задача " + taskId + " { " +
+        return " Задача " + id + " { " +
                 "nameTask='" + nameTask + '\'' +
                 ", description='" + description + '\'' +
                 ", status=" + status;
     }
 
-    public int getTaskId() {
-        return taskId;
+    public int getId() {
+        return id;
     }
 
-    public void setTaskId(int taskId) {
-        this.taskId = taskId;
+    public void setTaskId(int id) {
+        this.id = id;
     }
 }

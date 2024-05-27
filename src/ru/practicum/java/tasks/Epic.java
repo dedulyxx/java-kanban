@@ -1,9 +1,11 @@
 package ru.practicum.java.tasks;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Epic extends Task {
 
-    private int epicId;
-    private int taskId;
+    private List<Integer> subtasksId = new ArrayList<>();
 
     public Epic(String nameTask, String description) {
         super(nameTask, description);
@@ -15,6 +17,10 @@ public class Epic extends Task {
         return this;
     }
 
+    public void addSubtaskId(Integer id) {
+        subtasksId.add(id);
+    }
+
     @Override
     public String toString() {
         return " Эпик { " +
@@ -24,21 +30,20 @@ public class Epic extends Task {
                 '}';
     }
 
-    public void setEpicId(int epicId) {
-        this.epicId = epicId;
-    }
-
-    public int getEpicId() {
-        return epicId;
-    }
-
     @Override
-    public int getTaskId() {
-        return taskId;
+    public int getId() {
+        return id;
     }
 
-    @Override
-    public void setTaskId(int taskId) {
-        this.taskId = taskId;
+    public List<Integer> getSubtasksId() {
+        return subtasksId;
+    }
+
+    public void removeSubtask(Integer i) {
+        subtasksId.remove(i);
+    }
+
+    public void clearSubtaskId() {
+        subtasksId.clear();
     }
 }

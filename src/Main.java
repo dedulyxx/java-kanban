@@ -15,6 +15,7 @@ public class Main {
         Subtask subtask2 = new Subtask("Subtask 2", "Subtask 2", 1);
         Epic epicTwo = new Epic("Epic 2", "Epic 2 - description");
         Subtask subtask3 = new Subtask("Subtask 3", "Subtask 3", 2);
+        Subtask subtask4 = new Subtask("Subtask 4", "Subtask 4", 2);
 
         System.out.println();
         System.out.println("....................Тест 1....................");
@@ -22,28 +23,28 @@ public class Main {
         taskManager.addTask(taskTwo);
         taskManager.addTask(taskthree);
         taskManager.addEpic(epic);
-        taskManager.addSubTasks(subtask);
-        taskManager.addSubTasks(subtask2);
+        taskManager.addNewSubtask(subtask);
+        taskManager.addNewSubtask(subtask2);
         taskManager.addEpic(epicTwo);
-        taskManager.addSubTasks(subtask3);
-        System.out.println(taskManager.viewTasks());
+        taskManager.addNewSubtask(subtask3);
+        taskManager.viewTasks();
         System.out.println();
 
         System.out.println("....................Тест 2....................");
         taskOne.setStatus(Status.IN_PROGRESS);
         taskTwo.setStatus(Status.DONE);
         taskthree.setStatus(Status.IN_PROGRESS);
-        taskManager.updateSubTask(subtask.getEpicId(), subtask.setStatus(Status.DONE));
-        taskManager.updateSubTask(subtask.getEpicId(), subtask2.setStatus(Status.DONE));
-        System.out.println(taskManager.viewTasks());
+        taskManager.updateSubTask(subtask.setStatus(Status.DONE));
+        taskManager.updateSubTask(subtask2.setStatus(Status.DONE));
+        taskManager.viewTasks();
 
         System.out.println();
         System.out.println("....................Тест 3....................");
         taskManager.removeTaskById(1);
         taskManager.removeEpic(epic);
-        taskManager.updateSubTask(subtask3.getEpicId(), subtask3.setStatus(Status.DONE));
-        System.out.println(taskManager.viewTasks());
-        taskManager.removeSubtask(epicTwo,subtask3);
-        System.out.println(taskManager.viewTasks());
+        taskManager.updateSubTask(subtask3.setStatus(Status.DONE));
+        taskManager.viewTasks();
+        taskManager.removeSubtask(subtask3);
+        taskManager.viewTasks();
     }
 }
