@@ -1,5 +1,7 @@
 package ru.practicum.java.tasks;
 
+import java.util.Objects;
+
 public class Subtask extends Task {
 
     private int epicId;
@@ -20,6 +22,21 @@ public class Subtask extends Task {
     }
 
     @Override
+    public boolean equals(Object object) {
+        if (this == object) return true;
+        if ((object.getClass() != this.getClass()) || object == null) return false;
+        Subtask subtask = (Subtask) object;
+        return id == subtask.id;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 3;
+        hash = 53 * hash + ((nameTask == null) ? 0 : nameTask.hashCode()) + ((description == null) ? 0 : description.hashCode()) + id + epicId;
+        return hash;
+    }
+
+    @Override
     public String toString() {
         return " nameTask='" + nameTask + '\'' +
                 ", description='" + description + '\'' +
@@ -29,6 +46,6 @@ public class Subtask extends Task {
 
     @Override
     public void setTaskId(int id) {
-        this.id = id;
+        super.setTaskId(id);
     }
 }
