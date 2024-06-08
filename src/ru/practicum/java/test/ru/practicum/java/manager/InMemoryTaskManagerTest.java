@@ -15,7 +15,7 @@ import java.util.Map;
 class InMemoryTaskManagerTest {
 
     TaskManager taskManager = Managers.getDefault();
-    InMemoryHistoryManager historyManager = new InMemoryHistoryManager();
+    HistoryManager historyManager = Managers.getDefaultHistory();
 
     Task task = new Task("Задача 1", "задача 1 - описание");
     Task taskTwo = new Task("Задача 2", "задача 2 - описание");
@@ -28,7 +28,7 @@ class InMemoryTaskManagerTest {
     Subtask subtask4 = new Subtask("Subtask 4", "Subtask 4", 2);
 
     @Test
-    void addTask() {
+    void addNewTask() {
         final int taskId = taskManager.addTask(task);
         final Task savedTask = taskManager.getTaskById(taskId);
 
@@ -43,7 +43,26 @@ class InMemoryTaskManagerTest {
     }
 
     @Test
-    void getTaskById() {
+    void addNewEpic() {
+        final int taskId = taskManager.addEpic(epic);
+        final Epic savedEpic = taskManager.getEpicById(taskId);
+
+        assertNotNull(savedEpic, "Эпик не найден.");
+        assertEquals(epic, savedEpic, "Эпики не совпадают.");
+    }
+
+    @Test
+    void addNewSubtask() {
+        taskManager.addEpic(epic);
+        taskManager.addNewSubtask(subtask);
+        final Subtask savedTask = taskManager.getSubtasksById(subtask.getId());
+
+        assertNotNull(savedTask, "Задача не найдена.");
+        assertEquals(subtask, savedTask, "Задачи не совпадают.");
+    }
+
+    @Test
+    void shouldReturnTaskWhenTaskIsExists() {
         taskManager.addTask(taskTwo);
         int id = taskTwo.getId();
         Task task = taskManager.getTaskById(id);
@@ -51,7 +70,7 @@ class InMemoryTaskManagerTest {
     }
 
     @Test
-    void getEpicById() {
+    void shouldReturnEpicWhenEpicIsExists() {
         taskManager.addEpic(epic);
         int id = epic.getEpicId();
         Epic ep = taskManager.getEpicById(id);
@@ -59,14 +78,14 @@ class InMemoryTaskManagerTest {
     }
 
     @Test
-    void getSubtasksByEpic() {
+    void shouldReturnSubtaskByEpicWhenSubtaskIsExists() {
         taskManager.addEpic(epic);
         taskManager.addNewSubtask(subtask);
         assertEquals(taskManager.getSubtasksByEpic(epic), subtask);
     }
 
     @Test
-    void getSubtasksById() {
+    void shouldReturnSubtaskByIdWhenSubtaskIsExists() {
         taskManager.addEpic(epic);
         taskManager.addNewSubtask(subtask);
         int id = subtask.getId();
@@ -75,7 +94,7 @@ class InMemoryTaskManagerTest {
     }
 
     @Test
-    void viewTasks() {
+    void viewTasksWhenAllTasksAreExist() {
         taskManager.addTask(taskThree);
         taskManager.addNewSubtask(subtask2);
         taskManager.addEpic(epicTwo);
@@ -92,7 +111,7 @@ class InMemoryTaskManagerTest {
     }
 
     @Test
-    void getHistory() {
+    void getHistoryWhenHistorySizeIsOne() {
         final List<Task> history = taskManager.getHistory();
         assertEquals(0, history.size());
         historyManager.add(task);
@@ -101,7 +120,7 @@ class InMemoryTaskManagerTest {
     }
 
     @Test
-    void removeAllTasks() {
+    void getEmptyListWhenRemoveAllTasks() {
         taskManager.removeAllTasks();
         final int tasks = taskManager.getTasks().size();
         final int epics = taskManager.getEpics().size();
@@ -112,7 +131,7 @@ class InMemoryTaskManagerTest {
     }
 
     @Test
-    void removeTaskById() {
+    void CheckForNullWhenRemoveTaskById() {
         taskManager.addTask(taskThree);
         taskManager.removeTaskById(1);
         Map<Integer, Task> tasks = taskManager.getTasks();
@@ -120,7 +139,7 @@ class InMemoryTaskManagerTest {
     }
 
     @Test
-    void removeEpicById() {
+    void CheckForNullWhenRemoveEpicById() {
         taskManager.addEpic(epic);
         taskManager.removeEpicById(1);
         Map<Integer, Epic> epics = taskManager.getEpics();
@@ -128,7 +147,7 @@ class InMemoryTaskManagerTest {
     }
 
     @Test
-    void removeSubtaskById() {
+    void CheckForNullWhenRemoveSubtaskById() {
         taskManager.addEpic(epicTwo);
         taskManager.addNewSubtask(subtask2);
         taskManager.removeSubtaskById(2);
@@ -137,7 +156,7 @@ class InMemoryTaskManagerTest {
     }
 
     @Test
-    void removeSubtask() {
+    void CheckForNullWhenRemoveSubtask() {
         taskManager.addEpic(epicTwo);
         taskManager.addNewSubtask(subtask2);
         taskManager.removeSubtask(subtask2);
@@ -146,7 +165,7 @@ class InMemoryTaskManagerTest {
     }
 
     @Test
-    void removeEpic() {
+    void CheckForNullWhenRemoveEpic() {
         taskManager.addEpic(epicTwo);
         taskManager.addNewSubtask(subtask2);
         taskManager.addNewSubtask(subtask3);
@@ -191,4 +210,19 @@ class InMemoryTaskManagerTest {
         assertEquals(epics.get(epic.getEpicId()).getStatus(),Status.IN_PROGRESS);
     }
 
+    @Test
+    void getInstanceByManagers() {
+        TaskManager taskManager = Managers.getDefault();
+        HistoryManager historyManager = Managers.getDefaultHistory();
+        assertEquals(taskManager, taskManager);
+        assertEquals(historyManager, historyManager);
+    }
+
+    @Test
+    void checkEqualsTasksWhenSetOneTaskId() {
+        taskManager.addTask(task);
+        taskManager.addTask(taskTwo);
+        taskTwo.setTaskId(1);
+        assertEquals(task,taskTwo);
+    }
 }

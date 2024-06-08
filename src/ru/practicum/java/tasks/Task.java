@@ -1,7 +1,5 @@
 package ru.practicum.java.tasks;
 
-import java.util.Objects;
-
 public class Task {
 
     protected final String nameTask;

@@ -10,7 +10,7 @@ class TaskTest {
     Task taskTwo = new Task("Задача 1", "задача 1 - описание");
 
     @Test
-    void setStatus() {
+    void CheckStatusWhenSetStatusDone() {
         assertEquals(task.status.NEW, task.getStatus());
         task.setStatus(Status.DONE);
         assertEquals(task.status.DONE, task.getStatus());
@@ -23,7 +23,7 @@ class TaskTest {
     }
 
     @Test
-    void getId() {
+    void getIdWhenCreateTask() {
         assertEquals(0, task.getId());
     }
 

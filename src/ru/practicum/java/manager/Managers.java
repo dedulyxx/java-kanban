@@ -1,8 +1,11 @@
 package ru.practicum.java.manager;
 
-import com.sun.source.tree.BreakTree;
-
 public class Managers {
+
+    private Managers() {
+
+    }
+
     public static TaskManager getDefault() {
         return new InMemoryTaskManager();
     }

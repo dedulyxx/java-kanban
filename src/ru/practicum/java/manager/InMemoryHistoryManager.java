@@ -7,11 +7,12 @@ import java.util.List;
 
 public class InMemoryHistoryManager implements HistoryManager {
 
-    public final List<Task> historyList = new ArrayList<>();
+    private static final int SIZE = 10;
+    private final List<Task> historyList = new ArrayList<>();
 
     @Override
     public void add(Task task) {
-        if (historyList.size() == 10) {
+        if (historyList.size() == SIZE) {
             historyList.removeFirst();
             historyList.add(task);
         } else {

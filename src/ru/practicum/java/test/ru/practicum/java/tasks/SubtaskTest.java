@@ -15,7 +15,7 @@ class SubtaskTest {
     Subtask subtask2 = new Subtask("Subtask 2", "Subtask 2", 1);
 
     @Test
-    void setStatus() {
+    void CheckStatusWhenSetStatusDone() {
         assertEquals(subtask.status.NEW, subtask.getStatus());
         subtask.setStatus(Status.DONE);
         assertEquals(subtask.status.DONE, subtask.getStatus());
@@ -31,7 +31,7 @@ class SubtaskTest {
     }
 
     @Test
-    void getEpicId() {
+    void getEpicIdWhenAddOneEpic() {
         assertEquals(1, subtask.getEpicId());
     }
 

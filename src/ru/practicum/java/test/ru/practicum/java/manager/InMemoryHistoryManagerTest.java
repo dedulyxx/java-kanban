@@ -27,7 +27,7 @@ class InMemoryHistoryManagerTest {
     Subtask subtask4 = new Subtask("Subtask 4", "Subtask 4", 2);
 
     @Test
-    void add() {
+    void addHistoryListAndCheckHistorySizeIsTen() {
         taskManager.addTask(taskOne);
         taskManager.addTask(taskTwo);
         taskManager.addTask(taskthree);
@@ -54,10 +54,22 @@ class InMemoryHistoryManagerTest {
     }
 
     @Test
-    void getHistory() {
+    void getHistoryWhenHistorySizeOne() {
         final List<Task> history = historyManager.getHistory();
         assertEquals(0, history.size());
         historyManager.add(taskOne);
         assertEquals(1, history.size());
+    }
+
+    @Test
+    void checkPreviousVersionTaskInHistoryList() {
+        taskManager.addTask(taskOne);
+        taskManager.addTask(taskTwo);
+        taskManager.addTask(taskthree);
+        historyManager.add(taskOne);
+        historyManager.add(taskTwo);
+        historyManager.add(taskthree);
+        final List<Task> history = historyManager.getHistory();
+        assertEquals(taskTwo, history.get(history.size() - 2));
     }
 }
