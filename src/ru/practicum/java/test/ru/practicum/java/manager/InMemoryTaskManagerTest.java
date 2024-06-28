@@ -182,34 +182,34 @@ class InMemoryTaskManagerTest {
     @Test
     void updateTaskWhenSetNewStatus() {
         taskManager.addTask(taskThree);
-        assertEquals(Status.isNew,taskThree.getStatus());
-        taskThree.setStatus(Status.isDone);
+        assertEquals(Status.NEW,taskThree.getStatus());
+        taskThree.setStatus(Status.DONE);
         taskManager.updateTask(taskThree);
         Map<Integer, Task> tasks = taskManager.getTasks();
-        assertEquals(tasks.get(taskThree.getId()).getStatus(),Status.isDone);
+        assertEquals(tasks.get(taskThree.getId()).getStatus(),Status.DONE);
     }
 
     @Test
     void updateEpicWhenSetNewStatus() {
         taskManager.addEpic(epic);
-        assertEquals(Status.isNew,epic.getStatus());
-        epic.setStatus(Status.isInProgress);
+        assertEquals(Status.NEW,epic.getStatus());
+        epic.setStatus(Status.IN_PROGRESS);
         taskManager.updateEpic(epic);
         Map<Integer, Epic> epics = taskManager.getEpics();
-        assertEquals(epics.get(epic.getEpicId()).getStatus(),Status.isNew);
+        assertEquals(epics.get(epic.getEpicId()).getStatus(),Status.NEW);
     }
 
     @Test
     void updateSubtaskWhenSetNewStatus() {
         taskManager.addEpic(epic);
         taskManager.addNewSubtask(subtask2);
-        assertEquals(Status.isNew,subtask2.getStatus());
-        subtask2.setStatus(Status.isInProgress);
+        assertEquals(Status.NEW,subtask2.getStatus());
+        subtask2.setStatus(Status.IN_PROGRESS);
         taskManager.updateSubTask(subtask2);
         Map<Integer, Subtask> subtasks = taskManager.getSubTasks();
-        assertEquals(subtasks.get(subtask2.getId()).getStatus(),Status.isInProgress);
+        assertEquals(subtasks.get(subtask2.getId()).getStatus(),Status.IN_PROGRESS);
         Map<Integer, Epic> epics = taskManager.getEpics();
-        assertEquals(epics.get(epic.getEpicId()).getStatus(),Status.isInProgress);
+        assertEquals(epics.get(epic.getEpicId()).getStatus(),Status.IN_PROGRESS);
     }
 
     @Test

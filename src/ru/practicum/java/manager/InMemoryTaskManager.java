@@ -244,7 +244,7 @@ public class InMemoryTaskManager implements TaskManager {
     private void checkTasks(Integer epicId) {
         List<Status> statusTask = new ArrayList<>();
         Epic epic = epics.get(epicId);
-        int countStatusisDone = 0;
+        int countStatusDONE = 0;
         int countStatusNEW = 0;
         if (!subTasks.isEmpty()) {
             for (Subtask subTask : subTasks.values()) {
@@ -253,32 +253,32 @@ public class InMemoryTaskManager implements TaskManager {
                 }
             }
             if (statusTask.isEmpty()) {
-                epic.setStatus(Status.isNew);
+                epic.setStatus(Status.NEW);
                 return;
             }
             for (Status status : statusTask) {
-                if (status == Status.isInProgress) {
-                    epic.setStatus(Status.isInProgress);
+                if (status == Status.IN_PROGRESS) {
+                    epic.setStatus(Status.IN_PROGRESS);
                     statusTask.clear();
                     return;
-                } else if (status == Status.isDone) {
-                    countStatusisDone++;
-                } else if (status == Status.isNew) {
+                } else if (status == Status.DONE) {
+                    countStatusDONE++;
+                } else if (status == Status.NEW) {
                     countStatusNEW++;
                 }
             }
-            if (countStatusisDone == statusTask.size()) {
-                epic.setStatus(Status.isDone);
+            if (countStatusDONE == statusTask.size()) {
+                epic.setStatus(Status.DONE);
                 statusTask.clear();
             } else if (countStatusNEW == statusTask.size()) {
-                epic.setStatus(Status.isNew);
+                epic.setStatus(Status.NEW);
                 statusTask.clear();
             } else {
-                epic.setStatus(Status.isInProgress);
+                epic.setStatus(Status.IN_PROGRESS);
                 statusTask.clear();
             }
         } else {
-            epic.setStatus(Status.isNew);
+            epic.setStatus(Status.NEW);
         }
     }
 }

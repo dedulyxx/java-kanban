@@ -15,10 +15,10 @@ class EpicTest {
     Subtask subtask = new Subtask("Subtask 1", "Subtask 1", 1);
 
     @Test
-    void CheckStatusWhenSetStatusisDone() {
-        assertEquals(epic.status.isNew, epic.getStatus());
-        epic.setStatus(Status.isDone);
-        assertEquals(epic.status.isDone, epic.getStatus());
+    void CheckStatusWhenSetStatusDONE() {
+        assertEquals(epic.status.NEW, epic.getStatus());
+        epic.setStatus(Status.DONE);
+        assertEquals(epic.status.DONE, epic.getStatus());
     }
 
     @Test
@@ -30,13 +30,13 @@ class EpicTest {
     }
 
     @Test
-    void getEpicIdWhenAdisDoneEpic() {
+    void getEpicIdWhenAdDONEEpic() {
         taskManager.addEpic(epic);
         assertEquals(1, epic.getEpicId());
     }
 
     @Test
-    void getIdWhenAdisDoneEpic() {
+    void getIdWhenAdDONEEpic() {
         taskManager.addEpic(epic);
         assertEquals(1, epic.getId());
     }

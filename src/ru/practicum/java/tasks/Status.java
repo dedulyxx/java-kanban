@@ -1,7 +1,7 @@
 package ru.practicum.java.tasks;
 
 public enum Status {
-    isNew,
-    isInProgress,
-    isDone
+    NEW,
+    IN_PROGRESS,
+    DONE
 }
