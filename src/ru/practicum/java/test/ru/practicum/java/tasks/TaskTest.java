@@ -10,10 +10,10 @@ class TaskTest {
     Task taskTwo = new Task("Задача 1", "задача 1 - описание");
 
     @Test
-    void CheckStatusWhenSetStatusDone() {
-        assertEquals(task.status.NEW, task.getStatus());
-        task.setStatus(Status.DONE);
-        assertEquals(task.status.DONE, task.getStatus());
+    void CheckStatusWhenSetStatusisDONE() {
+        assertEquals(task.status.isNEW, task.getStatus());
+        task.setStatus(Status.isDONE);
+        assertEquals(task.status.isDONE, task.getStatus());
     }
 
     @Test

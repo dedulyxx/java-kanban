@@ -10,7 +10,7 @@ public class Task {
     public Task(String nameTask, String description) {
         this.nameTask = nameTask;
         this.description = description;
-        this.status = Status.NEW;
+        this.status = Status.isNEW;
     }
 
 
