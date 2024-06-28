@@ -133,15 +133,15 @@ public class InMemoryTaskManager implements TaskManager {
             System.out.println("Подзадач нет");
             return null;
         }
-            for (Subtask subTask : subTasks.values()) {
-                if (subTask.getId() == id) {
-                    System.out.println(subTask);
-                    history.add(subTask);
-                    return subTask;
-                }
+        for (Subtask subTask : subTasks.values()) {
+            if (subTask.getId() == id) {
+                System.out.println(subTask);
+                history.add(subTask);
+                return subTask;
             }
+        }
         System.out.println("Подзадачи с таким идентификатором нет!");
-            return null;
+        return null;
     }
 
     @Override
@@ -174,14 +174,14 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public void removeSubtaskById(int id) {                                 //Удалить подзадачу по id
         if (!subTasks.isEmpty()) {
-                for (Subtask subTask : subTasks.values()) {
-                    if (subTask.getId() == id) {
-                        history.remove(id);
-                        subTasks.remove(subTask.getId());
-                        checkTasks(subTask.getEpicId());
-                        return;
-                    }
+            for (Subtask subTask : subTasks.values()) {
+                if (subTask.getId() == id) {
+                    history.remove(id);
+                    subTasks.remove(subTask.getId());
+                    checkTasks(subTask.getEpicId());
+                    return;
                 }
+            }
         } else {
             System.out.println("Задачи с таким индентификатором нет");
         }
@@ -223,8 +223,8 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public Epic updateEpic(Epic epic) {                                      //Обновить Эпик
         if (epics.containsKey(epic.getId())) {
-        epics.put(epic.getId(), epic);
-        checkTasks(epic.getId());
+            epics.put(epic.getId(), epic);
+            checkTasks(epic.getId());
         }
         return epic;
     }
