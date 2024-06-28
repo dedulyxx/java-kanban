@@ -114,9 +114,11 @@ class InMemoryTaskManagerTest {
     void getHistoryWhenHistorySizeIsOne() {
         final List<Task> history = taskManager.getHistory();
         assertEquals(0, history.size());
-        historyManager.add(task);
+        taskManager.addTask(task);
         taskManager.getTaskById(1);
-        assertEquals(1, history.size());
+        historyManager.add(task);
+        List<Task> tasks = historyManager.getHistory();
+        assertEquals(tasks, taskManager.getHistory());
     }
 
     @Test
@@ -224,5 +226,26 @@ class InMemoryTaskManagerTest {
         taskManager.addTask(taskTwo);
         taskTwo.setTaskId(1);
         assertEquals(task,taskTwo);
+    }
+
+    @Test
+    void checkIdWhenSubtaskDelete() {
+        taskManager.addEpic(epic);
+        taskManager.addNewSubtask(subtask2);
+        taskManager.getSubtasksById(2);
+        historyManager.add(subtask2);
+        assertEquals(historyManager.getHistory(),taskManager.getHistory());
+        taskManager.removeSubtask(subtask2);
+        historyManager.remove(2);
+        assertEquals(historyManager.getHistory(),taskManager.getHistory());
+    }
+
+    @Test
+    void checkIdInEpicListWhenSubtaskDelete() {
+        taskManager.addEpic(epic);
+        taskManager.addNewSubtask(subtask2);
+        assertEquals(1,epic.getSubtasksId().size());
+        taskManager.removeSubtask(subtask2);
+        assertEquals(0,epic.getSubtasksId().size());
     }
 }
