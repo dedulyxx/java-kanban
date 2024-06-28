@@ -182,34 +182,34 @@ class InMemoryTaskManagerTest {
     @Test
     void updateTaskWhenSetNewStatus() {
         taskManager.addTask(taskThree);
-        assertEquals(Status.isNEW,taskThree.getStatus());
-        taskThree.setStatus(Status.isDONE);
+        assertEquals(Status.isNew,taskThree.getStatus());
+        taskThree.setStatus(Status.isDone);
         taskManager.updateTask(taskThree);
         Map<Integer, Task> tasks = taskManager.getTasks();
-        assertEquals(tasks.get(taskThree.getId()).getStatus(),Status.isDONE);
+        assertEquals(tasks.get(taskThree.getId()).getStatus(),Status.isDone);
     }
 
     @Test
     void updateEpicWhenSetNewStatus() {
         taskManager.addEpic(epic);
-        assertEquals(Status.isNEW,epic.getStatus());
-        epic.setStatus(Status.isIN_PROGRESS);
+        assertEquals(Status.isNew,epic.getStatus());
+        epic.setStatus(Status.isInProgress);
         taskManager.updateEpic(epic);
         Map<Integer, Epic> epics = taskManager.getEpics();
-        assertEquals(epics.get(epic.getEpicId()).getStatus(),Status.isNEW);
+        assertEquals(epics.get(epic.getEpicId()).getStatus(),Status.isNew);
     }
 
     @Test
     void updateSubtaskWhenSetNewStatus() {
         taskManager.addEpic(epic);
         taskManager.addNewSubtask(subtask2);
-        assertEquals(Status.isNEW,subtask2.getStatus());
-        subtask2.setStatus(Status.isIN_PROGRESS);
+        assertEquals(Status.isNew,subtask2.getStatus());
+        subtask2.setStatus(Status.isInProgress);
         taskManager.updateSubTask(subtask2);
         Map<Integer, Subtask> subtasks = taskManager.getSubTasks();
-        assertEquals(subtasks.get(subtask2.getId()).getStatus(),Status.isIN_PROGRESS);
+        assertEquals(subtasks.get(subtask2.getId()).getStatus(),Status.isInProgress);
         Map<Integer, Epic> epics = taskManager.getEpics();
-        assertEquals(epics.get(epic.getEpicId()).getStatus(),Status.isIN_PROGRESS);
+        assertEquals(epics.get(epic.getEpicId()).getStatus(),Status.isInProgress);
     }
 
     @Test

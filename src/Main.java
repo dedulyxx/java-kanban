@@ -32,17 +32,17 @@ public class Main {
         System.out.println();
 
         System.out.println("....................Тест 2....................");
-        taskOne.setStatus(Status.isIN_PROGRESS);
+        taskOne.setStatus(Status.isInProgress);
 
-        taskThree.setStatus(Status.isIN_PROGRESS);
-        taskManager.updateSubTask(subtask.setStatus(Status.isDONE));
-        taskManager.updateSubTask(subtask2.setStatus(Status.isDONE));
+        taskThree.setStatus(Status.isInProgress);
+        taskManager.updateSubTask(subtask.setStatus(Status.isDone));
+        taskManager.updateSubTask(subtask2.setStatus(Status.isDone));
         taskManager.viewTasks();
         System.out.println();
         System.out.println("....................Тест 3....................");
         taskManager.removeTaskById(1);
 
-        taskManager.updateSubTask(subtask3.setStatus(Status.isDONE));
+        taskManager.updateSubTask(subtask3.setStatus(Status.isDone));
         taskManager.viewTasks();
         taskManager.removeSubtask(subtask3);
         taskManager.viewTasks();
@@ -51,7 +51,7 @@ public class Main {
         System.out.println("....................Тест 4....................");
         taskManager.addNewSubtask(subtask4);
         taskManager.getTaskById(2);
-        taskTwo.setStatus(Status.isDONE);
+        taskTwo.setStatus(Status.isDone);
         taskManager.getTaskById(2);
         taskManager.getTaskById(3);
         taskManager.getTaskById(2);

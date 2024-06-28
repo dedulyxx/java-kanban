@@ -15,10 +15,10 @@ class SubtaskTest {
     Subtask subtask2 = new Subtask("Subtask 2", "Subtask 2", 1);
 
     @Test
-    void CheckStatusWhenSetStatusisDONE() {
-        assertEquals(subtask.status.isNEW, subtask.getStatus());
-        subtask.setStatus(Status.isDONE);
-        assertEquals(subtask.status.isDONE, subtask.getStatus());
+    void CheckStatusWhenSetStatusisDone() {
+        assertEquals(subtask.status.isNew, subtask.getStatus());
+        subtask.setStatus(Status.isDone);
+        assertEquals(subtask.status.isDone, subtask.getStatus());
     }
 
     @Test
@@ -31,7 +31,7 @@ class SubtaskTest {
     }
 
     @Test
-    void getEpicIdWhenAdisDONEEpic() {
+    void getEpicIdWhenAdisDoneEpic() {
         assertEquals(1, subtask.getEpicId());
     }
 
