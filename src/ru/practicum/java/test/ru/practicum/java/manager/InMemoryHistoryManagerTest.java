@@ -1,6 +1,5 @@
 package ru.practicum.java.manager;
 
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -8,7 +7,6 @@ import ru.practicum.java.tasks.Epic;
 import ru.practicum.java.tasks.Subtask;
 import ru.practicum.java.tasks.Task;
 
-import java.util.ArrayList;
 import java.util.List;
 
 class InMemoryHistoryManagerTest {
