@@ -133,7 +133,7 @@ class InMemoryTaskManagerTest {
     }
 
     @Test
-    void CheckForNullWhenRemoveTaskById() {
+    void checkForNullWhenRemoveTaskById() {
         taskManager.addTask(taskThree);
         taskManager.removeTaskById(1);
         Map<Integer, Task> tasks = taskManager.getTasks();
@@ -141,7 +141,7 @@ class InMemoryTaskManagerTest {
     }
 
     @Test
-    void CheckForNullWhenRemoveEpicById() {
+    void checkForNullWhenRemoveEpicById() {
         taskManager.addEpic(epic);
         taskManager.removeEpicById(1);
         Map<Integer, Epic> epics = taskManager.getEpics();
@@ -149,7 +149,7 @@ class InMemoryTaskManagerTest {
     }
 
     @Test
-    void CheckForNullWhenRemoveSubtaskById() {
+    void checkForNullWhenRemoveSubtaskById() {
         taskManager.addEpic(epicTwo);
         taskManager.addNewSubtask(subtask2);
         taskManager.removeSubtaskById(2);
@@ -158,7 +158,7 @@ class InMemoryTaskManagerTest {
     }
 
     @Test
-    void CheckForNullWhenRemoveSubtask() {
+    void checkForNullWhenRemoveSubtask() {
         taskManager.addEpic(epicTwo);
         taskManager.addNewSubtask(subtask2);
         taskManager.removeSubtask(subtask2);
@@ -167,7 +167,7 @@ class InMemoryTaskManagerTest {
     }
 
     @Test
-    void CheckForNullWhenRemoveEpic() {
+    void checkForNullWhenRemoveEpic() {
         taskManager.addEpic(epicTwo);
         taskManager.addNewSubtask(subtask2);
         taskManager.addNewSubtask(subtask3);
@@ -247,5 +247,16 @@ class InMemoryTaskManagerTest {
         assertEquals(1,epic.getSubtasksId().size());
         taskManager.removeSubtask(subtask2);
         assertEquals(0,epic.getSubtasksId().size());
+    }
+
+    @Test
+    void checkSetMethodsInTaskManager() {
+        taskManager.addEpic(epic);
+        taskManager.addNewSubtask(subtask2);
+        epic.setStatus(Status.IN_PROGRESS);
+        assertEquals(Status.IN_PROGRESS,epic.getStatus());
+        assertEquals(Status.NEW,subtask2.getStatus());
+        subtask2.setTaskId(10);
+        assertEquals(10,subtask2.getId());
     }
 }

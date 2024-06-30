@@ -14,20 +14,18 @@ public class InMemoryHistoryManager implements HistoryManager {
 
     @Override
     public void add(Task task) {
-        LinkedListNew<Task> tasks = new LinkedListNew<>();
         remove(task.getId());
-        Node node = tasks.linkLast(task);
-        historyList.put(task.getId(),node);
+        Node node = linkLast(task);
+        historyList.put(task.getId(), node);
     }
 
     @Override
     public void remove(Integer id) {
         Node node = historyList.remove(id);
-        if(node == null) {
+        if (node == null) {
             return;
         }
-        LinkedListNew<Task> tasks = new LinkedListNew<>();
-        tasks.removeNode(node);
+        removeNode(node);
     }
 
     public void clear() {
@@ -39,30 +37,75 @@ public class InMemoryHistoryManager implements HistoryManager {
 
     @Override
     public List<Task> getHistory() {
-        LinkedListNew<Task> tasks = new LinkedListNew<>();
-        List<Task> tasksList = tasks.getTasksInList();
+        List<Task> tasksList = getTasksInList();
         System.out.println(tasksList);
         return tasksList;
     }
 
-    class LinkedListNew<Task> {
+    public class Node<Task> {
 
-        public LinkedListNew() {
+        Task task;
+        Node<Task> next;
+        Node<Task> prev;
 
+        private Node(Node<Task> prev, Task task, Node<Task> next) {
+            this.task = task;
+            this.next = next;
+            this.prev = prev;
         }
+    }
 
-        Node linkLast(Task task) {
-                Node oldTail = tail;
-                Node node = new Node(oldTail, task, null);
-                tail = node;
-                if (oldTail == null) {
-                    head = node;
-                } else {
-                    oldTail.next = node;
-                }
-                size++;
-                return node;
-            }
+    @Override
+    public Node linkLast(Task task) {
+        Node oldTail = tail;
+        Node node = new Node(oldTail, task, null);
+        tail = node;
+        if (oldTail == null) {
+            head = node;
+        } else {
+            oldTail.next = node;
+        }
+        size++;
+        return node;
+    }
+
+    @Override
+    public Task removeNode(Node<Task> node) {
+        final Task task = node.task;
+        final Node next = node.next;
+        final Node prev = node.prev;
+
+        if (next == null) {
+            tail = prev;
+        } else {
+            next.prev = prev;
+            node.prev = null;
+        }
+        if (prev == null) {
+            head = next;
+        } else {
+            prev.next = next;
+            node.next = null;
+        }
+        node.task = null;
+        return task;
+    }
+
+    @Override
+    public List<Task> getTasksInList() {
+        List<Task> tasksList = new ArrayList<>();
+        Node<Task> node = head;
+        while (node != null) {
+            tasksList.add(node.task);
+            node = node.next;
+        }
+//            for (Node node : historyList.values()) {
+//                if (node.task != null) {
+//                    tasksList.add((Task) node.task);
+//                }
+//            }
+        return tasksList;
+    }
 
 //        public void linkFirst(Task task) {
 //            Node oldHead = head;
@@ -75,44 +118,4 @@ public class InMemoryHistoryManager implements HistoryManager {
 //            }
 //        }
 
-        public Task removeNode(Node<Task> node) {
-            final Task task = node.task;
-            final Node next = node.next;
-            final Node prev = node.prev;
-
-            if (next == null) {
-                tail = prev;
-            } else {
-                next.prev = prev;
-                node.prev = null;
-            }
-            if (prev == null) {
-                head = next;
-            } else {
-                prev.next = next;
-                node.next = null;
-            }
-            node.task = null;
-            return task;
-        }
-
-
-
-        List<Task> getTasksInList() {
-            List<Task> tasksList = new ArrayList<>();
-            Node<Task> node = (Node<Task>) head;
-            for (int i = 0; i < size; i++) {
-                if (node != null) {
-                    tasksList.add(node.task);
-                    node = node.next;
-                }
-            }
-//            for (Node node : historyList.values()) {
-//                if (node.task != null) {
-//                    tasksList.add((Task) node.task);
-//                }
-//            }
-            return tasksList;
-        }
-    }
 }
