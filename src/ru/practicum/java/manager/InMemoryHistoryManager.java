@@ -42,13 +42,13 @@ public class InMemoryHistoryManager implements HistoryManager {
         return tasksList;
     }
 
-    public class Node<task> {
+    public class Node<T extends Task> {
 
-        task task;
-        Node<task> next;
-        Node<task> prev;
+        Task task;
+        Node<Task> next;
+        Node<Task> prev;
 
-        private Node(Node<task> prev, task task, Node<task> next) {
+        private Node(Node<Task> prev, Task task, Node<Task> next) {
             this.task = task;
             this.next = next;
             this.prev = prev;
