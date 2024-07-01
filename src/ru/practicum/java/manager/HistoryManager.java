@@ -13,9 +13,5 @@ public interface HistoryManager {
 
     List<Task> getHistory();
 
-    InMemoryHistoryManager.Node linkLast(Task task);
-
-    Task removeNode(InMemoryHistoryManager.Node<Task> node);
-
     List<Task> getTasksInList();
 }

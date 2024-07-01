@@ -55,7 +55,7 @@ public class InMemoryHistoryManager implements HistoryManager {
         }
     }
 
-    @Override
+
     public Node linkLast(Task task) {
         Node oldTail = tail;
         Node node = new Node(oldTail, task, null);
@@ -69,7 +69,7 @@ public class InMemoryHistoryManager implements HistoryManager {
         return node;
     }
 
-    @Override
+
     public Task removeNode(Node<Task> node) {
         final Task task = node.task;
         final Node next = node.next;
