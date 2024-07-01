@@ -1,6 +1,5 @@
 package ru.practicum.java.manager;
 
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -8,7 +7,6 @@ import ru.practicum.java.tasks.Epic;
 import ru.practicum.java.tasks.Subtask;
 import ru.practicum.java.tasks.Task;
 
-import java.util.ArrayList;
 import java.util.List;
 
 class InMemoryHistoryManagerTest {
@@ -43,22 +41,18 @@ class InMemoryHistoryManagerTest {
         historyManager.add(epicTwo);
         historyManager.add(subtask4);
         historyManager.add(taskOne);
-        historyManager.add(subtask4);
-        historyManager.add(subtask3);
-        historyManager.add(subtask4);
-        historyManager.add(subtask3);
-        historyManager.add(subtask3);
         final List<Task> history = historyManager.getHistory();
         assertNotNull(history, "История пустая.");
-        assertEquals(10, history.size());
+        assertEquals(4, history.size());
     }
 
     @Test
     void getHistoryWhenHistorySizeOne() {
-        final List<Task> history = historyManager.getHistory();
-        assertEquals(0, history.size());
+        assertEquals(taskManager.getHistory(), historyManager.getHistory());
         historyManager.add(taskOne);
-        assertEquals(1, history.size());
+        taskManager.addTask(taskOne);
+        taskManager.getTaskById(1);
+        assertEquals(taskManager.getHistory(), historyManager.getHistory());
     }
 
     @Test

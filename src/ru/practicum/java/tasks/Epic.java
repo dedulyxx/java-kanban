@@ -2,7 +2,6 @@ package ru.practicum.java.tasks;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 public class Epic extends Task {
 

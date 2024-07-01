@@ -14,8 +14,8 @@ public class Subtask extends Task {
     }
 
     @Override
-    public Subtask setStatus(Status Status) {
-        super.setStatus(Status);
+    public Subtask setStatus(Status status) {
+        super.setStatus(status);
         return this;
     }
 

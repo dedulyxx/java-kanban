@@ -14,8 +14,8 @@ public class Task {
     }
 
 
-    public Task setStatus(Status Status) {
-        status = Status;
+    public Task setStatus(Status status) {
+        this.status = status;
         return this;
     }
 
