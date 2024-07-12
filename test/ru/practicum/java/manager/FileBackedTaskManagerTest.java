@@ -40,11 +40,10 @@ class FileBackedTaskManagerTest {
 
     @Test
     void loadTasksFromFile() throws IOException {
-        FileBackedTaskManager fileBackedTaskManager = FileBackedTaskManager.loadFromFile(Paths.get("C:\\java-kanban\\tasks.txt").toFile());
+        FileBackedTaskManager.loadFromFile(Paths.get("C:\\java-kanban\\tasks.txt").toFile());
         BufferedReader br = new BufferedReader(new FileReader("C:\\java-kanban\\tasks.txt"));
-        String line;
         int i = 0;
-        while ((line = br.readLine()) != null) {
+        while (br.readLine() != null) {
             i++;
         }
         assertEquals(4, i);
