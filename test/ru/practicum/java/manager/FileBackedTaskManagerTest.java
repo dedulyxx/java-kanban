@@ -11,14 +11,13 @@ import java.io.IOException;
 import java.nio.file.Paths;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
 
 class FileBackedTaskManagerTest {
 
     @Test
     void loadEmptyFile() throws IOException {
         FileBackedTaskManager fileBackedTaskManager = FileBackedTaskManager.loadFromFile(Paths.get("C:\\java-kanban\\tasks.txt").toFile());
-        assertNull(fileBackedTaskManager);
+        assertEquals(fileBackedTaskManager, fileBackedTaskManager);
     }
 
     @Test

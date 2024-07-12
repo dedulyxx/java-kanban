@@ -139,16 +139,9 @@ public class Main {
         fileManager.addTask(taskOne);
         fileManager.addEpic(epic);
         fileManager.addNewSubtask(subtask);
-        fileManager.addEpic(epicTwo);
-        fileManager.addNewSubtask(subtask3);
 
         System.out.println();
         System.out.println("....................Тест 8....................");
-        fileManager.addTask(taskOne);
-        fileManager.addEpic(epic);
-        fileManager.addNewSubtask(subtask);
-        fileManager.addEpic(epicTwo);
-        fileManager.addNewSubtask(subtask3);
         FileBackedTaskManager fileBackedTaskManager = FileBackedTaskManager.loadFromFile(Paths.get("C:\\java-kanban\\tasks.txt").toFile());
         fileBackedTaskManager.viewTasks();
     }
