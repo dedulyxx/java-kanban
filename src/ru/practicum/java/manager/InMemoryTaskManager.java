@@ -5,7 +5,10 @@ import ru.practicum.java.tasks.Status;
 import ru.practicum.java.tasks.Subtask;
 import ru.practicum.java.tasks.Task;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class InMemoryTaskManager implements TaskManager {
 

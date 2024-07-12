@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Test;
 import ru.practicum.java.manager.Managers;
 import ru.practicum.java.manager.TaskManager;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class EpicTest {
 

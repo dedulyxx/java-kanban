@@ -1,9 +1,6 @@
 package ru.practicum.java.manager;
 
 import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.*;
-
 import ru.practicum.java.tasks.Epic;
 import ru.practicum.java.tasks.Status;
 import ru.practicum.java.tasks.Subtask;
@@ -12,6 +9,8 @@ import ru.practicum.java.tasks.Task;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 class InMemoryTaskManagerTest {
 
