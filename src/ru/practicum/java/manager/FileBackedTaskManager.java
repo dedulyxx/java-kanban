@@ -24,11 +24,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager implements TaskMa
 
     public FileBackedTaskManager(File file) {
         this.file = file.toPath();
-        if (!path.toFile().exists()) {
-
-        } else {
             counter = path.toFile();
-        }
     }
 
     private void save() {
