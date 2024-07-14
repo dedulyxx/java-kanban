@@ -150,21 +150,17 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
 
     private void save() {
         if (file.toFile().length() == 0) {
-            try {
                 try (FileWriter fw = new FileWriter(file.toFile(), StandardCharsets.UTF_8, true)) {
                     fw.write("id,type,name,status,description,epic\n");
                 } catch (IOException e) {
                     throw new ManagerSaveException("Error save task in File");
                 }
-            } catch (ManagerSaveException e) {
-                e.printStackTrace();
-            }
         }
         if (!counter.exists()) {
             try {
                 counter = Files.createFile(path).toFile();
             } catch (IOException e) {
-                e.printStackTrace();
+                throw new ManagerSaveException("Error create File");
             }
         }
         Map<Integer, Task> tasks = super.getTasks();
@@ -222,7 +218,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
                 }
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new ManagerSaveException("Error read File");
         }
         return isExist;
     }
@@ -233,7 +229,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
             listId.add(Integer.valueOf(lines[0]));
             count.write(id + "\n");
         } catch (IOException e) {
-            System.out.println("Error saving file");
+            throw new ManagerSaveException("Error saving File");
         }
     }
 
