@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class FileBackedTaskManager extends InMemoryTaskManager implements TaskManager {
+public class FileBackedTaskManager extends InMemoryTaskManager {
 
     public Path file;
     private Path path = Paths.get("C:\\java-kanban\\count.txt");
@@ -24,106 +24,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager implements TaskMa
 
     public FileBackedTaskManager(File file) {
         this.file = file.toPath();
-            counter = path.toFile();
-    }
-
-    private void save() {
-        if (file.toFile().length() == 0) {
-            try {
-                try (FileWriter fw = new FileWriter(file.toFile(), StandardCharsets.UTF_8, true)) {
-                    fw.write("id,type,name,status,description,epic\n");
-                } catch (IOException e) {
-                    throw new ManagerSaveException("Error save task in File");
-                }
-            } catch (ManagerSaveException e) {
-                e.printStackTrace();
-            }
-        }
-        if (!counter.exists()) {
-            try {
-                counter = Files.createFile(path).toFile();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        Map<Integer, Task> tasks = super.getTasks();
-        Map<Integer, Epic> epics = super.getEpics();
-        Map<Integer, Subtask> subtasks = super.getSubTasks();
-        boolean isExist = false;
-        for (Task task : tasks.values()) {
-            String taskInString = toString(task);
-            String[] lines = taskInString.split(",");
-            try (BufferedReader bufferedReader = new BufferedReader(new FileReader(counter, StandardCharsets.UTF_8))) {
-                String line;
-                while ((line = bufferedReader.readLine()) != null) {
-                    if (line.equals(lines[0])) {
-                        isExist = true;
-                        break;
-                    }
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            if (!isExist) {
-                try (FileWriter fw = new FileWriter(file.toFile(), StandardCharsets.UTF_8, true); FileWriter count = new FileWriter(path.toFile(), StandardCharsets.UTF_8, true)) {
-                    fw.write(taskInString);
-                    listId.add(Integer.valueOf(lines[0]));
-                    count.write(task.getId() + "\n");
-                } catch (IOException e) {
-                    System.out.println("Error saving file");
-                }
-            }
-        }
-        for (Epic epic : epics.values()) {
-            String taskInString = toString(epic);
-            String[] lines = taskInString.split(",");
-            try (BufferedReader bufferedReader = new BufferedReader(new FileReader(counter, StandardCharsets.UTF_8))) {
-                isExist = false;
-                String line;
-                while ((line = bufferedReader.readLine()) != null) {
-                    if (line.equals(lines[0])) {
-                        isExist = true;
-                        break;
-                    }
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            if (!isExist) {
-                try (FileWriter fw = new FileWriter(file.toFile(), StandardCharsets.UTF_8, true); FileWriter count = new FileWriter(path.toFile(), StandardCharsets.UTF_8, true)) {
-                    fw.write(taskInString);
-                    listId.add(Integer.valueOf(lines[0]));
-                    count.write(epic.getId() + "\n");
-                } catch (IOException e) {
-                    System.out.println("Error saving file");
-                }
-            }
-        }
-        for (Subtask subtask : subtasks.values()) {
-            String taskInString = toString(subtask);
-            String[] lines = taskInString.split(",");
-            try (BufferedReader bufferedReader = new BufferedReader(new FileReader(counter, StandardCharsets.UTF_8))) {
-                isExist = false;
-                String line;
-                while ((line = bufferedReader.readLine()) != null) {
-                    if (line.equals(lines[0])) {
-                        isExist = true;
-                        break;
-                    }
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            if (!isExist) {
-                try (FileWriter fw = new FileWriter(file.toFile(), StandardCharsets.UTF_8, true); FileWriter count = new FileWriter(counter, StandardCharsets.UTF_8, true)) {
-                    fw.write(taskInString);
-                    listId.add(Integer.valueOf(lines[0]));
-                    count.write(subtask.getId() + "\n");
-                } catch (IOException e) {
-                    System.out.println("Error saving file");
-                }
-            }
-        }
+        counter = path.toFile();
     }
 
     public static FileBackedTaskManager loadFromFile(File file) throws IOException {
@@ -131,57 +32,46 @@ public class FileBackedTaskManager extends InMemoryTaskManager implements TaskMa
             FileBackedTaskManager fileBackedTaskManager = new FileBackedTaskManager(file);
             List<String> list = Files.readAllLines(file.toPath());
             list.removeFirst();
+            String nameTask;
+            String description;
+            Status status;
+            int id;
+            int epicId;
             for (String line : list) {
                 String[] parts = line.split(",");
                 if (parts[1].equals("TASK")) {
-                    Task task = new Task(parts[2], parts[4]);
-                    task.setStatus(Status.valueOf(parts[3]));
-                    task.setTaskId(Integer.parseInt(parts[0]));
+                    nameTask = parts[2];
+                    description = parts[4];
+                    status = Status.valueOf(parts[3]);
+                    id = Integer.parseInt(parts[0]);
+                    Task task = new Task(nameTask, description);
+                    task.setStatus(status);
+                    task.setTaskId(id);
                     fileBackedTaskManager.addTask(task);
                 } else if (parts[1].equals("EPIC")) {
-                    Epic epic = new Epic(parts[2], parts[4]);
-                    epic.setStatus(Status.valueOf(parts[3]));
-                    epic.setTaskId(Integer.parseInt(parts[0]));
+                    nameTask = parts[2];
+                    description = parts[4];
+                    status = Status.valueOf(parts[3]);
+                    id = Integer.parseInt(parts[0]);
+                    Epic epic = new Epic(nameTask, description);
+                    epic.setStatus(status);
+                    epic.setTaskId(id);
                     fileBackedTaskManager.addEpic(epic);
                 } else if (parts[1].equals("SUBTASK")) {
-                    Subtask subtask = new Subtask(parts[2], parts[4], Integer.parseInt(parts[5]));
-                    subtask.setStatus(Status.valueOf(parts[3]));
-                    subtask.setTaskId(Integer.parseInt(parts[0]));
+                    nameTask = parts[2];
+                    description = parts[4];
+                    epicId = Integer.parseInt(parts[5]);
+                    status = Status.valueOf(parts[3]);
+                    id = Integer.parseInt(parts[0]);
+                    Subtask subtask = new Subtask(nameTask, description, epicId);
+                    subtask.setStatus(status);
+                    subtask.setTaskId(id);
                     fileBackedTaskManager.addNewSubtask(subtask);
                 }
             }
             return fileBackedTaskManager;
         } else {
             System.out.println("File does not exist");
-        }
-        return null;
-    }
-
-    private String toString(Task task) {
-        String taskInString = task.toString();
-        int id = task.getId();
-        Status status = task.getStatus();
-        StringBuilder taskBuilder = new StringBuilder(taskInString);
-        int start = taskBuilder.indexOf("'");
-        int end = taskBuilder.indexOf("'", start + 1);
-        String name = taskBuilder.substring(start + 1, end);
-        start = taskBuilder.indexOf("'", end + 1);
-        end = taskBuilder.indexOf("'", start + 1);
-        String description = taskBuilder.substring(start + 1, end);
-        int epic = 0;
-        TypeTask type = null;
-        if (task.getClass() == Subtask.class) {
-            type = TypeTask.SUBTASK;
-            Subtask sub = (Subtask) task;
-            epic = sub.getEpicId();
-            return String.format("%d,%s,%s,%s,%s,%s\n", id, type, name, status, description, epic);
-        } else if (task.getClass() == Epic.class) {
-            type = TypeTask.EPIC;
-            return String.format("%d,%s,%s,%s,%s\n", id, type, name, status, description);
-        } else if (task.getClass() == Task.class) {
-            type = TypeTask.TASK;
-            return String.format("%d,%s,%s,%s,%s\n", id, type, name, status, description);
-
         }
         return null;
     }
@@ -258,4 +148,120 @@ public class FileBackedTaskManager extends InMemoryTaskManager implements TaskMa
         return subtask;
     }
 
+    private void save() {
+        if (file.toFile().length() == 0) {
+            try {
+                try (FileWriter fw = new FileWriter(file.toFile(), StandardCharsets.UTF_8, true)) {
+                    fw.write("id,type,name,status,description,epic\n");
+                } catch (IOException e) {
+                    throw new ManagerSaveException("Error save task in File");
+                }
+            } catch (ManagerSaveException e) {
+                e.printStackTrace();
+            }
+        }
+        if (!counter.exists()) {
+            try {
+                counter = Files.createFile(path).toFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        Map<Integer, Task> tasks = super.getTasks();
+        Map<Integer, Epic> epics = super.getEpics();
+        Map<Integer, Subtask> subtasks = super.getSubTasks();
+        saveTask(tasks);
+        saveEpic(epics);
+        saveSubTask(subtasks);
+    }
+
+    private void saveTask(Map<Integer, Task> tasks) {
+        for (Task task : tasks.values()) {
+            String taskInString = toString(task);
+            String[] lines = taskInString.split(",");
+            boolean isExist = checkExist(lines);
+            if (!isExist) {
+                int id = task.getId();
+                saveInFile(taskInString, lines, id);
+            }
+        }
+    }
+
+    private void saveEpic(Map<Integer, Epic> epics) {
+        for (Epic epic : epics.values()) {
+            String taskInString = toString(epic);
+            String[] lines = taskInString.split(",");
+            boolean isExist = checkExist(lines);
+            if (!isExist) {
+                int id = epic.getId();
+                saveInFile(taskInString, lines, id);
+            }
+        }
+    }
+
+    private void saveSubTask(Map<Integer, Subtask> subtasks) {
+        for (Subtask subtask : subtasks.values()) {
+            String taskInString = toString(subtask);
+            String[] lines = taskInString.split(",");
+            boolean isExist = checkExist(lines);
+            if (!isExist) {
+                int id = subtask.getId();
+                saveInFile(taskInString, lines, id);
+            }
+        }
+    }
+
+    private boolean checkExist(String[] lines) {
+        boolean isExist = false;
+        try (BufferedReader bufferedReader = new BufferedReader(new FileReader(counter, StandardCharsets.UTF_8))) {
+            String line;
+            while ((line = bufferedReader.readLine()) != null) {
+                if (line.equals(lines[0])) {
+                    isExist = true;
+                    break;
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return isExist;
+    }
+
+    private void saveInFile(String taskInString, String[] lines, int id) {
+        try (FileWriter fw = new FileWriter(file.toFile(), StandardCharsets.UTF_8, true); FileWriter count = new FileWriter(path.toFile(), StandardCharsets.UTF_8, true)) {
+            fw.write(taskInString);
+            listId.add(Integer.valueOf(lines[0]));
+            count.write(id + "\n");
+        } catch (IOException e) {
+            System.out.println("Error saving file");
+        }
+    }
+
+    private String toString(Task task) {
+        String taskInString = task.toString();
+        int id = task.getId();
+        Status status = task.getStatus();
+        StringBuilder taskBuilder = new StringBuilder(taskInString);
+        int start = taskBuilder.indexOf("'");
+        int end = taskBuilder.indexOf("'", start + 1);
+        String name = taskBuilder.substring(start + 1, end);
+        start = taskBuilder.indexOf("'", end + 1);
+        end = taskBuilder.indexOf("'", start + 1);
+        String description = taskBuilder.substring(start + 1, end);
+        int epic = 0;
+        TypeTask type = null;
+        if (task.getClass() == Subtask.class) {
+            type = TypeTask.SUBTASK;
+            Subtask sub = (Subtask) task;
+            epic = sub.getEpicId();
+            return String.format("%d,%s,%s,%s,%s,%s\n", id, type, name, status, description, epic);
+        } else if (task.getClass() == Epic.class) {
+            type = TypeTask.EPIC;
+            return String.format("%d,%s,%s,%s,%s\n", id, type, name, status, description);
+        } else if (task.getClass() == Task.class) {
+            type = TypeTask.TASK;
+            return String.format("%d,%s,%s,%s,%s\n", id, type, name, status, description);
+        }
+        return null;
+    }
 }
