@@ -33,9 +33,8 @@ class FileBackedTaskManagerTest {
         fileManager.addEpic(epic);
         fileManager.addNewSubtask(subtask);
         BufferedReader br = new BufferedReader(new FileReader("./count.txt"));
-        String line;
         int i = 0;
-        while ((line = br.readLine()) != null) {
+        while ((br.readLine()) != null) {
             i++;
         }
         assertEquals(4, i);
