@@ -15,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class FileBackedTaskManagerTest {
 
-    File file = Paths.get("C://java-kanban//tasks.txt").toFile();
+    File file = Paths.get("/home/tasks.txt").toFile();
 
     @Test
     void loadEmptyFile() throws IOException {
@@ -32,7 +32,7 @@ class FileBackedTaskManagerTest {
         fileManager.addTask(taskOne);
         fileManager.addEpic(epic);
         fileManager.addNewSubtask(subtask);
-        BufferedReader br = new BufferedReader(new FileReader("C://java-kanban//tasks.txt"));
+        BufferedReader br = new BufferedReader(new FileReader("/home/tasks.txt"));
         String line;
         int i = 0;
         while ((line = br.readLine()) != null) {
@@ -44,7 +44,7 @@ class FileBackedTaskManagerTest {
     @Test
     void loadTasksFromFile() throws IOException {
         FileBackedTaskManager.loadFromFile(file);
-        BufferedReader br = new BufferedReader(new FileReader("C://java-kanban//tasks.txt"));
+        BufferedReader br = new BufferedReader(new FileReader("/home/tasks.txt"));
         int i = 0;
         while (br.readLine() != null) {
             i++;
