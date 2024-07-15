@@ -15,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class FileBackedTaskManagerTest {
 
-    private Path path = Paths.get("./count.txt");
+    private Path path = Paths.get("./tasks.txt");
 
     @Test
     void loadEmptyFile() throws IOException {
@@ -32,7 +32,7 @@ class FileBackedTaskManagerTest {
         fileManager.addTask(taskOne);
         fileManager.addEpic(epic);
         fileManager.addNewSubtask(subtask);
-        BufferedReader br = new BufferedReader(new FileReader("./count.txt"));
+        BufferedReader br = new BufferedReader(new FileReader("./tasks.txt"));
         int i = 0;
         while ((br.readLine()) != null) {
             i++;
@@ -43,7 +43,7 @@ class FileBackedTaskManagerTest {
     @Test
     void loadTasksFromFile() throws IOException {
         FileBackedTaskManager.loadFromFile(path.toFile());
-        BufferedReader br = new BufferedReader(new FileReader("./count.txt"));
+        BufferedReader br = new BufferedReader(new FileReader("./tasks.txt"));
         int i = 0;
         while (br.readLine() != null) {
             i++;

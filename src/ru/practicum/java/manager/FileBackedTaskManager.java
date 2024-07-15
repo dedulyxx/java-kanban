@@ -18,8 +18,8 @@ import java.util.Map;
 public class FileBackedTaskManager extends InMemoryTaskManager {
 
     public Path file;
-    private Path path = Paths.get("C:\\java-kanban\\count.txt");
-    public File counter = path.toFile();
+    private Path path = Paths.get("./count.txt");
+    public File counter;
     List<Integer> listId = new ArrayList();
 
     public FileBackedTaskManager(File file) {
@@ -150,11 +150,11 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
 
     private void save() {
         if (file.toFile().length() == 0) {
-                try (FileWriter fw = new FileWriter(file.toFile(), StandardCharsets.UTF_8, true)) {
-                    fw.write("id,type,name,status,description,epic\n");
-                } catch (IOException e) {
-                    throw new ManagerSaveException("Error save task in File");
-                }
+            try (FileWriter fw = new FileWriter(file.toFile(), StandardCharsets.UTF_8, true)) {
+                fw.write("id,type,name,status,description,epic\n");
+            } catch (IOException e) {
+                throw new ManagerSaveException("Error save task in File");
+            }
         }
         if (!counter.exists()) {
             try {
@@ -173,7 +173,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
 
     private void saveTask(Map<Integer, Task> tasks) {
         for (Task task : tasks.values()) {
-            String taskInString = toString(task);
+            String taskInString = task.toCsvString();
             String[] lines = taskInString.split(",");
             boolean isExist = checkExist(lines);
             if (!isExist) {
@@ -185,7 +185,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
 
     private void saveEpic(Map<Integer, Epic> epics) {
         for (Epic epic : epics.values()) {
-            String taskInString = toString(epic);
+            String taskInString = epic.toCsvString();
             String[] lines = taskInString.split(",");
             boolean isExist = checkExist(lines);
             if (!isExist) {
@@ -197,7 +197,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
 
     private void saveSubTask(Map<Integer, Subtask> subtasks) {
         for (Subtask subtask : subtasks.values()) {
-            String taskInString = toString(subtask);
+            String taskInString = subtask.toCsvString();
             String[] lines = taskInString.split(",");
             boolean isExist = checkExist(lines);
             if (!isExist) {
@@ -231,33 +231,5 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         } catch (IOException e) {
             throw new ManagerSaveException("Error saving File");
         }
-    }
-
-    private String toString(Task task) {
-        String taskInString = task.toString();
-        int id = task.getId();
-        Status status = task.getStatus();
-        StringBuilder taskBuilder = new StringBuilder(taskInString);
-        int start = taskBuilder.indexOf("'");
-        int end = taskBuilder.indexOf("'", start + 1);
-        String name = taskBuilder.substring(start + 1, end);
-        start = taskBuilder.indexOf("'", end + 1);
-        end = taskBuilder.indexOf("'", start + 1);
-        String description = taskBuilder.substring(start + 1, end);
-        int epic = 0;
-        TypeTask type = null;
-        if (task.getClass() == Subtask.class) {
-            type = TypeTask.SUBTASK;
-            Subtask sub = (Subtask) task;
-            epic = sub.getEpicId();
-            return String.format("%d,%s,%s,%s,%s,%s\n", id, type, name, status, description, epic);
-        } else if (task.getClass() == Epic.class) {
-            type = TypeTask.EPIC;
-            return String.format("%d,%s,%s,%s,%s\n", id, type, name, status, description);
-        } else if (task.getClass() == Task.class) {
-            type = TypeTask.TASK;
-            return String.format("%d,%s,%s,%s,%s\n", id, type, name, status, description);
-        }
-        return null;
     }
 }

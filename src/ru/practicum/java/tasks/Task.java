@@ -1,5 +1,7 @@
 package ru.practicum.java.tasks;
 
+import ru.practicum.java.manager.TypeTask;
+
 public class Task {
 
     protected final String nameTask;
@@ -53,5 +55,16 @@ public class Task {
 
     public void setTaskId(int id) {
         this.id = id;
+    }
+
+    public String toCsvString() {
+        if (this.getClass() == Subtask.class) {
+            return String.format("%d,%s,%s,%s,%s,%s\n", id, TypeTask.SUBTASK, nameTask, status, description, ((Subtask) this).getEpicId());
+        } else if (this.getClass() == Epic.class) {
+            return String.format("%d,%s,%s,%s,%s\n", id, TypeTask.EPIC, nameTask, status, description);
+        } else if (this.getClass() == Task.class) {
+            return String.format("%d,%s,%s,%s,%s\n", id, TypeTask.TASK, nameTask, status, description);
+        }
+        return null;
     }
 }

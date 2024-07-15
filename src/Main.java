@@ -6,6 +6,7 @@ import ru.practicum.java.tasks.Subtask;
 import ru.practicum.java.tasks.Task;
 
 import java.io.IOException;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 
 public class Main {
@@ -13,7 +14,8 @@ public class Main {
     public static void main(String[] args) throws IOException {
 
         TaskManager taskManager = Managers.getDefault();
-        TaskManager fileManager = new FileBackedTaskManager(Paths.get("C:\\java-kanban\\tasks.txt").toFile());
+        Path path = Paths.get("./tasks.txt");
+        TaskManager fileManager = new FileBackedTaskManager(path.toFile());
 
         Task taskOne = new Task("Задача 1", "задача 1 - описание");
         Task taskTwo = new Task("Задача 2", "задача 2 - описание");
@@ -142,7 +144,7 @@ public class Main {
 
         System.out.println();
         System.out.println("....................Тест 8....................");
-        FileBackedTaskManager fileBackedTaskManager = FileBackedTaskManager.loadFromFile(Paths.get("C:\\java-kanban\\tasks.txt").toFile());
+        FileBackedTaskManager fileBackedTaskManager = FileBackedTaskManager.loadFromFile(path.toFile());
         fileBackedTaskManager.viewTasks();
     }
 }
