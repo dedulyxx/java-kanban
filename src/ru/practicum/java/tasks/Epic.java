@@ -50,7 +50,7 @@ public class Epic extends Task {
     public String toString() {
         return " Эпик { " +
                 "nameTask='" + nameTask + '\'' +
-                ", description=" + description +
+                ", description='" + description + '\'' +
                 ", status=" + status +
                 '}';
     }
