@@ -32,13 +32,13 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
             FileBackedTaskManager fileBackedTaskManager = new FileBackedTaskManager(file);
             List<String> list = Files.readAllLines(file.toPath());
             list.removeFirst();
-            String nameTask;
-            String description;
-            Status status;
-            int id;
-            int epicId;
             for (String line : list) {
                 String[] parts = line.split(",");
+                String nameTask;
+                String description;
+                Status status;
+                int id;
+                int epicId;
                 if (parts[1].equals("TASK")) {
                     nameTask = parts[2];
                     description = parts[4];
